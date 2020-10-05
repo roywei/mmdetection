@@ -52,7 +52,12 @@ model = dict(
             reg_class_agnostic=False,
             loss_cls=dict(
                 type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0),
-            loss_bbox=dict(type='L1Loss', loss_weight=1.0)),
+            loss_bbox=dict(_delete_=True,
+                           type='BalancedL1Loss',
+                           alpha=0.5,
+                           gamma=1.5,
+                           beta=1.0,
+                           loss_weight=1.0)),
         mask_roi_extractor=dict(
             type='SingleRoIExtractor',
             roi_layer=dict(type='RoIAlign', output_size=14, sampling_ratio=0),
