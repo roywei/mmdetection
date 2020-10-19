@@ -173,6 +173,7 @@ class ScoreHLRSampler(BaseSampler):
 
                 # imp: importance
                 imp = cls_score.new_zeros(num_valid)
+                print("size of group:", len(group))
                 for g in group:
                     g_score = valid_max_score[g]
                     # g_score has already sorted

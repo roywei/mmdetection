@@ -81,15 +81,19 @@ def isr_p(cls_score,
     # Two steps to compute IoU-HLR. Samples are first sorted by IoU locally,
     # then sorted again within the same-rank group
     max_l_num = pos_labels.bincount().max()
+    print("pos labels unique: ", len(pos_labels.unique))
     for label in pos_labels.unique():
         l_inds = (pos_labels == label).nonzero().view(-1)
         l_gts = gts[l_inds]
+        print("labels gts: ", len(l_gts.unique))
         for t in l_gts.unique():
             t_inds = l_inds[l_gts == t]
             t_ious = ious[t_inds]
+            print("size of  t ious: ", len(t_ious))
             _, t_iou_rank_idx = t_ious.sort(descending=True)
             _, t_iou_rank = t_iou_rank_idx.sort()
             ious[t_inds] += max_l_num - t_iou_rank.float()
+            print("size of  t ious idx: ", len(t_iou_rank_idx))
         l_ious = ious[l_inds]
         _, l_iou_rank_idx = l_ious.sort(descending=True)
         _, l_iou_rank = l_iou_rank_idx.sort()  # IoU-HLR
